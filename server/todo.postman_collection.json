@@ -1,0 +1,125 @@
+{
+  "info": {
+    "name": "Todo App Server",
+    "_postman_id": "todo-app-server-collection",
+    "description": "Collection to test the local Todo API (health, list, create, delete).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000",
+      "type": "string"
+    },
+    {
+      "key": "lastTodoId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List Todos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/todos",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "todos"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Todo",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Test todo\",\n  \"description\": \"temp\",\n  \"dueDate\": null,\n  \"categoryId\": null\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/todos",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "todos"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Save the created todo id to a collection variable 'lastTodoId'",
+              "if (pm.response.code === 201) {",
+              "  try {",
+              "    const json = pm.response.json();",
+              "    if (json && json.id) {",
+              "      pm.collectionVariables.set('lastTodoId', json.id);",
+              "      pm.test('saved lastTodoId', () => pm.expect(json).to.have.property('id'));",
+              "    }",
+              "  } catch (e) {",
+              "    // ignore JSON parse errors",
+              "  }",
+              "} else {",
+              "  pm.test('create returned 201', () => pm.expect(pm.response.code).to.equal(201));",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete Todo (use lastTodoId)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/todos/{{lastTodoId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "todos", "{{lastTodoId}}"]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('delete status is 204 or 404 (not found)', () => {",
+              "  pm.expect([204, 404]).to.include(pm.response.code);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ]
+}
