@@ -52,6 +52,10 @@ curl -i -X DELETE http://localhost:4000/api/todos/<id>
 Notes
 - The server stores state in-memory — restarting the server will clear data.
 
+Postman collection and demo image
+- Postman collection: `server/todo.postman_collection.json` — import it to run the health/list/create/delete requests. The collection saves created todo ids to the `lastTodoId` collection variable.
+- Demo screenshot: /Users/mahmoodfamily/todoapp/client/demo.png
+
 Example curl session
 --------------------
 Below is an example interactive session (commands and server responses) that demonstrates listing todos, creating a todo, listing again, deleting it, and confirming deletion:
