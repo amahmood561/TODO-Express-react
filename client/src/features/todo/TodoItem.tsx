@@ -38,7 +38,21 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
           <button onClick={() => setEditing(true)}>Edit</button>
         </>
       )}
-      <button onClick={() => dispatch(deleteTodo(todo.id))}>Delete</button>
+      <button
+        onClick={() => {
+          // dispatch the delete thunk and refresh the page when it succeeds
+          dispatch(deleteTodo(todo.id))
+            .then(() => {
+              // reload to refresh the list
+              window.location.reload();
+            })
+            .catch(() => {
+              // noop: UI could show an error instead
+            });
+        }}
+      >
+        Delete
+      </button>
     </div>
   );
 };

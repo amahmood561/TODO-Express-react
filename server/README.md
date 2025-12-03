@@ -51,3 +51,43 @@ curl -i -X DELETE http://localhost:4000/api/todos/<id>
 
 Notes
 - The server stores state in-memory — restarting the server will clear data.
+
+Example curl session
+--------------------
+Below is an example interactive session (commands and server responses) that demonstrates listing todos, creating a todo, listing again, deleting it, and confirming deletion:
+
+```bash
+# list
+curl -i http://localhost:4000/api/todos
+
+# create
+curl -i -X POST http://localhost:4000/api/todos -H "Content-Type: application/json" -d '{"title":"Test todo","description":"temp","dueDate":null,"categoryId":null}'
+
+# list (returns the created todo)
+curl -i http://localhost:4000/api/todos
+
+# delete (replace <id> with returned id)
+curl -i -X DELETE http://localhost:4000/api/todos/<id>
+
+# list (after delete)
+curl -i http://localhost:4000/api/todos
+```
+
+Example output (from a sample run):
+
+```txt
+HTTP/1.1 200 OK
+[]
+
+HTTP/1.1 201 Created
+{"id":"fpgqw7g","title":"Test todo","description":"temp","dueDate":null,"categoryId":null,"completed":false,...}
+
+HTTP/1.1 200 OK
+[{"id":"fpgqw7g","title":"Test todo",...}]
+
+HTTP/1.1 204 No Content
+
+HTTP/1.1 200 OK
+[]
+```
+
