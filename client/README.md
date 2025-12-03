@@ -1,3 +1,39 @@
+# Todo App — Client
+
+This is the Vite + React TypeScript client for the Todo app.
+
+Prerequisites
+- Node.js (v18+) and npm
+
+Install dependencies
+
+```bash
+cd client
+npm install
+```
+
+Run in development
+
+```bash
+npm run dev
+```
+
+Build
+
+```bash
+npm run build
+```
+
+Preview production build
+
+```bash
+npm run preview
+```
+
+Notes
+- The client expects the API backend at http://localhost:4000/api (see `src/api/client.ts`).
+- Start the server before interacting with the app to avoid fetch errors.
+- If you need to change the API base URL, update `src/api/client.ts`.
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
